@@ -17,6 +17,7 @@ class Tree(object):
     def __init__(self):
         self.nodes = {}
         self.root = None
+        self.allow_multiple_parents = False
 
 
     def add_node(self, node, parent=None):
@@ -28,7 +29,10 @@ class Tree(object):
             raise OSError("First parameter must be object of Class::Node.")
 
         if node.identifier in self.nodes:
-            node = self.get_node(node.identifier)
+        	if self.allow_multiple_parents:
+            	node = self.get_node(node.identifier)
+        	else:
+            	raise DuplicatedNodeIdError("No Duplicates: Can't create node with ID '%s'" % node.identifier)
         else:
             self.nodes.update({node.identifier : node})
 
